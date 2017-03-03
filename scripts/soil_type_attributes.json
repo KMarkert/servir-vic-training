@@ -1,0 +1,223 @@
+{
+  "classAttributes": [
+    {
+      "class": "12",
+      "properties": {
+        "classname": "Clay (Heavy)",
+        "%Sand": "24.71",
+		"%Clay": "52.46",
+		"BulkDensity": "1.39",
+		"FieldCapacity": "0.36",
+		"WiltingPoint": "0.27",
+		"Porosity": "0.47",
+		"SatHydraulicCapacity": "3.18",
+		"SlopeRCurve": "12.28",
+		"BubblingPressure": "85.6",
+		"Residual": "0.09",
+		"Quartz": "0.25"
+       }
+    },
+    {
+      "class": "11",
+      "properties": {
+        "classname": "Silty Clay",
+        "%Sand": "8.18",
+		"%Clay": "44.58",
+		"BulkDensity": "1.35",
+		"FieldCapacity": "0.37",
+		"WiltingPoint": "0.25",
+		"Porosity": "0.49",
+		"SatHydraulicCapacity": "2.95",
+		"SlopeRCurve": "9.76",
+		"BubblingPressure": "76.54",
+		"Residual": "0.056",
+		"Quartz": "0.10"
+       }
+    },
+    {
+      "class": "13",
+      "properties": {
+        "classname": "Clay (Light)",
+        "%Sand": "24.71",
+		"%Clay": "52.46",
+		"BulkDensity": "1.39",
+		"FieldCapacity": "0.36",
+		"WiltingPoint": "0.27",
+		"Porosity": "0.47",
+		"SatHydraulicCapacity": "3.18",
+		"SlopeRCurve": "12.28",
+		"BubblingPressure": "85.6",
+		"Residual": "0.09",
+		"Quartz": "0.25"
+       }
+    },
+    {
+      "class": "8",
+      "properties": {
+        "classname": "Silty Clay Loam",
+        "%Sand": "9.04",
+		"%Clay": "33.05",
+		"BulkDensity": "1.38",
+		"FieldCapacity": "0.36",
+		"WiltingPoint": "0.21",
+		"Porosity": "0.48",
+		"SatHydraulicCapacity": "4.57",
+		"SlopeRCurve": "7.48",
+		"BubblingPressure": "70.33",
+		"Residual": "0.04",
+		"Quartz": "0.10"
+       }
+    },
+    {
+      "class": "9",
+      "properties": {
+        "classname": "Clay Loam",
+        "%Sand": "30.08",
+		"%Clay": "33.46",
+		"BulkDensity": "1.43",
+		"FieldCapacity": "0.34",
+		"WiltingPoint": "0.21",
+		"Porosity": "0.46",
+		"SatHydraulicCapacity": "1.77",
+		"SlopeRCurve": "8.02",
+		"BubblingPressure": "56.43",
+		"Residual": "0.075",
+		"Quartz": "0.35"
+       }
+    },
+    {
+      "class": "5",
+      "properties": {
+        "classname": "Silt",
+        "%Sand": "4.50",
+		"%Clay": "8.30",
+		"BulkDensity": "1.28",
+		"FieldCapacity": "0.28",
+		"WiltingPoint": "0.08",
+		"Porosity": "0.52",
+		"SatHydraulicCapacity": "8.59",
+		"SlopeRCurve": "3.05",
+		"BubblingPressure": "76.54",
+		"Residual": "0.056",
+		"Quartz": "0.10"
+       }
+    },
+    {
+      "class": "4",
+      "properties": {
+        "classname": "Silt Loam",
+        "%Sand": "19.28",
+		"%Clay": "17.11",
+		"BulkDensity": "1.42",
+		"FieldCapacity": "0.32",
+		"WiltingPoint": "0.12",
+		"Porosity": "0.46",
+		"SatHydraulicCapacity": "3.96",
+		"SlopeRCurve": "3.79",
+		"BubblingPressure": "50.87",
+		"Residual": "0.015",
+		"Quartz": "0.25"
+       }
+    },
+    {
+      "class": "10",
+      "properties": {
+        "classname": "Sandy Clay",
+        "%Sand": "50.32",
+		"%Clay": "39.3",
+		"BulkDensity": "1.57",
+		"FieldCapacity": "0.31",
+		"WiltingPoint": "0.23",
+		"Porosity": "0.41",
+		"SatHydraulicCapacity": "1.19",
+		"SlopeRCurve": "13.0",
+		"BubblingPressure": "79.48",
+		"Residual": "0.0109",
+		"Quartz": "0.52"
+       }
+    },
+    {
+      "class": "6",
+      "properties": {
+        "classname": "Loam",
+        "%Sand": "41.00",
+		"%Clay": "20.69",
+		"BulkDensity": "1.49",
+		"FieldCapacity": "0.29",
+		"WiltingPoint": "0.14",
+		"Porosity": "0.43",
+		"SatHydraulicCapacity": "1.97",
+		"SlopeRCurve": "5.3",
+		"BubblingPressure": "40.12",
+		"Residual": "0.027",
+		"Quartz": "0.40"
+       }
+    },
+    {
+      "class": "7",
+      "properties": {
+        "classname": "Sandy Clay Loam",
+        "%Sand": "60.97",
+		"%Clay": "26.33",
+		"BulkDensity": "1.60",
+		"FieldCapacity": "0.27",
+		"WiltingPoint": "0.17",
+		"Porosity": "0.39",
+		"SatHydraulicCapacity": "2.4",
+		"SlopeRCurve": "8.66",
+		"BubblingPressure": "59.41",
+		"Residual": "0.068",
+		"Quartz": "0.60"
+       }
+    },
+    {
+      "class": "3",
+      "properties": {
+        "classname": "Sandy Loam",
+        "%Sand": "69.28",
+		"%Clay": "12.48",
+		"BulkDensity": "1.57",
+		"FieldCapacity": "0.21",
+		"WiltingPoint": "0.09",
+		"Porosity": "0.40",
+		"SatHydraulicCapacity": "5.24",
+		"SlopeRCurve": "4.84",
+		"BubblingPressure": "30.2",
+		"Residual": "0.041",
+		"Quartz": "0.60"
+       }
+    },
+    {
+      "class": "2",
+      "properties": {
+        "classname": "Loamy Sand",
+        "%Sand": "85.23",
+		"%Clay": "6.53",
+		"BulkDensity": "1.52",
+		"FieldCapacity": "0.15",
+		"WiltingPoint": "0.06",
+		"Porosity": "0.42",
+		"SatHydraulicCapacity": "10.87",
+		"SlopeRCurve": "3.99",
+		"BubblingPressure": "20.58",
+		"Residual": "0.035",
+		"Quartz": "0.82"
+       }
+    },
+    {
+      "class": "1",
+      "properties": {
+        "classname": "Sand",
+        "%Sand": "94.83",
+		"%Clay": "2.27",
+		"BulkDensity": "1.49",
+		"FieldCapacity": "0.08",
+		"WiltingPoint": "0.03",
+		"Porosity": "0.43",
+		"SatHydraulicCapacity": "38.41",
+		"SlopeRCurve": "4.1",
+		"BubblingPressure": "15.98",
+		"Residual": "0.02",
+		"Quartz": "0.92"
+       }
+    }]}

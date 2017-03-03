@@ -1,0 +1,128 @@
+{
+  "classAttributes": [
+    {
+      "class": "0",
+      "properties": {
+        "classname": "Water",
+        "overstory": "0",
+		"rootd1": "0.1",
+		"rootd2": "0.5",
+		"rootd3": "0.25",
+		"rootfr1": "0.1",
+		"rootfr2": "0.8",
+		"rootfr3": "0.1",
+		"fetch": "0.1",
+		"rarc": "2",
+		"rmin": "100",
+		"h": "0.1",
+		"rgl": "30",
+		"rad_atn": "0.5",
+		"wnd_atn": "0.5",
+		"trnk_r": "0.2"
+      	}
+    },
+    {
+      "class": “1”,
+      "properties": {
+        "classname": "Forest",
+        "overstory": "1",
+		"rootd1": "0.1",
+		"rootd2": "1.0",
+		"rootd3": "3.0",
+		"rootfr1": "0.05",
+		"rootfr2": "0.65",
+		"rootfr3": "0.30",
+		"fetch": "0.30",
+		"rarc": "30",
+		"rmin": "125",
+		"h": "25.",
+		"rgl": "30",
+		"rad_atn": "0.5",
+		"wnd_atn": "0.5",
+		"trnk_r": "0.2"
+       }
+    },
+    {
+      "class": “2”,
+      "properties": {
+        "classname": "Grassland",
+        "overstory": "0",
+		"rootd1": "0.1",
+		"rootd2": "1.0",
+		"rootd3": "0.5",
+		"rootfr1": "0.1",
+		"rootfr2": "0.65",
+		"rootfr3": "0.25",
+		"fetch": "0.25",
+		"rarc": "2",
+		"rmin": "40",
+		"h": "1.",
+		"rgl": "100",
+		"rad_atn": "0.5",
+		"wnd_atn": "0.5",
+		"trnk_r": "0.2"
+       }
+    },
+    {
+      "class": “3”,
+      "properties": {
+        "classname": "Cropland",
+        "overstory": "0",
+		"rootd1": "0.1",
+		"rootd2": "1.0",
+		"rootd3": "0.5",
+		"rootfr1": "0.1",
+		"rootfr2": "0.55",
+		"rootfr3": "0.35",
+		"fetch": "0.25",
+		"rarc": "2",
+		"rmin": "40",
+		"h": "1.",
+		"rgl": "100",
+		"rad_atn": "0.5",
+		"wnd_atn": "0.5",
+		"trnk_r": "0.2"
+       }
+    },
+    {
+      "class": “4”,
+      "properties": {
+        "classname": "Settlement",
+        "overstory": "0",
+		"rootd1": "0.1",
+		"rootd2": "1.0",
+		"rootd3": "0.5",
+		"rootfr1": "0.1",
+		"rootfr2": "0.55",
+		"rootfr3": "0.35",
+		"fetch": "0.25",
+		"rarc": "2",
+		"rmin": "200",
+		"h": "0.7",
+		"rgl": "999",
+		"rad_atn": "0.5",
+		"wnd_atn": "0.5",
+		"trnk_r": "0.2"
+       }
+    },
+    {
+      "class": "5",
+      "properties": {
+        "classname": "Other",
+        "overstory": "0",
+		"rootd1": "0.1",
+		"rootd2": "0.75",
+		"rootd3": "0.25",
+		"rootfr1": "0.1",
+		"rootfr2": "0.8",
+		"rootfr3": "0.1",
+		"fetch": "0.1",
+		"rarc": "2",
+		"rmin": "999",
+		"h": "0.1",
+		"rgl": "999",
+		"rad_atn": "0.5",
+		"wnd_atn": "0.5",
+		"trnk_r": "0.2"
+       }
+    }]}
