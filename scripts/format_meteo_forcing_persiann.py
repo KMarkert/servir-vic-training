@@ -5,7 +5,7 @@ import numpy as np
 from osgeo import gdal
 from osgeo.gdalnumeric import *  
 from osgeo.gdalconst import *
-from datetime import datetime
+import datetime
 
 def find_nearest_idx(xx,yy,xval,yval):    
     xidx = (np.abs(xx-xval)).argmin()
@@ -25,7 +25,7 @@ def format_meteo_forcing(basin_mask,inpath,outpath,startyr,endyr):
     
     infiles = [os.path.join(__location__,basin_mask)]
     
-    old = 'YYYY.DDD'
+    old = 'YYYY/YYYY.MM.DD'
                 
     for i in range(len(infiles)):
         
@@ -66,8 +66,8 @@ def format_meteo_forcing(basin_mask,inpath,outpath,startyr,endyr):
             
                 for yrs in range(years.size):
         
-                    #for ERA/CHIRPS data
-                    ncdfs = [os.path.join(__location__,inpath,'persiann/persiann-css.YYYY.DDD.NyandoBasin.tif'),
+                    #for ERA/Corrected PERSIANN data
+                    ncdfs = [os.path.join('/home/servir-vic/Documents/bc_training/data/Nyando/persian/corrected_persian/YYYY/YYYY.MM.DD.tif'),
                             os.path.join(__location__,inpath,"nyando_era_met_data.nc")]
                     
                     if yrs == 0:
@@ -98,8 +98,18 @@ def format_meteo_forcing(basin_mask,inpath,outpath,startyr,endyr):
                             time = 366
                         else:
                             time = 365
-                        for t in range(time):
-                            new = str(years[yrs])+'.'+str(t+1)
+                        for t in range(time):			    
+			    date = datetime.date(years[yrs],01,01) + datetime.timedelta(t)
+
+			    yr = date.year
+			    mn = date.month
+			    if len(str(mn)) < 2:
+				mn = '0'+str(mn)
+			    dy = date.day
+			    if len(str(dy)) < 2:
+				dy = '0'+str(dy)
+
+			    new = '{0}/{0}.{1}.{2}'.format(yr,mn,dy)
                             
                             prds = gdal.Open(ncdfs[0].replace(old,new),GA_ReadOnly)
                             b1 = prds.GetRasterBand(band)
@@ -148,9 +158,9 @@ def format_meteo_forcing(basin_mask,inpath,outpath,startyr,endyr):
     
 def main():
 
-    t1 = datetime.now()
+    t1 = datetime.datetime.now()
     format_meteo_forcing(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
-    dt = datetime.now()-t1
+    dt = datetime.datetime.now()-t1
     print 'Processing time: {0}'.format(dt)
     
     return
