@@ -105,7 +105,8 @@ def make_irf(xmask,diff,velo):
     Function for creating the impulse response function (IRF) for a grid cell
     
     Arguments:
-        xmask -- the area in square meters for the grid cell
+        xmask -- longest path for any location within the grid cell to reach
+                 the stream channel [m]
     
     Keywords:
         diff -- the diffusivity parameter (default 800) [m^2/s]
@@ -136,7 +137,8 @@ def make_uh(xmask_val,uh_box,diff,velo):
     Function for creating the unit hydrograph for a grid cell
     
     Arguments:
-        xmask_val -- the area in square meters for the grid cell
+        xmask_val -- longest path for any location within the grid cell to reach
+                     the stream channel [m]
         uh_box -- the monthly hydrograph (values 0-1)
         
     Keywords:

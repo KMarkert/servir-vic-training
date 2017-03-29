@@ -22,7 +22,7 @@
       	}
     },
     {
-      "class": “1”,
+      "class": "1",
       "properties": {
         "classname": "Forest",
         "overstory": "1",
@@ -43,7 +43,7 @@
        }
     },
     {
-      "class": “2”,
+      "class": "2",
       "properties": {
         "classname": "Grassland",
         "overstory": "0",
@@ -64,7 +64,7 @@
        }
     },
     {
-      "class": “3”,
+      "class": "3",
       "properties": {
         "classname": "Cropland",
         "overstory": "0",
@@ -85,7 +85,7 @@
        }
     },
     {
-      "class": “4”,
+      "class": "4",
       "properties": {
         "classname": "Settlement",
         "overstory": "0",

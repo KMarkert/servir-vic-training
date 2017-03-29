@@ -12,14 +12,14 @@ def find_nearest_idx(arr,var):
 spatialRef = osr.SpatialReference()
 spatialRef.SetWellKnownGeogCS('WGS_84')
 
-infolder = '/Users/kmarkert/Documents/servir-vic-training/data/input/forcing/raw/km0033ie7OYC/'
+infolder = '~/data/input/forcing/raw/globalprecip/'
 
 # extent [NNN,WWW,SSS,EEE]
 bb = [0.15,34.5,-0.75,36.0]
 
 flist = glob.glob(infolder + '*.tif')
 
-outfolder = '/Users/kmarkert/Documents/servir-vic-training/data/input/forcing/raw/persiann/'
+outfolder = '~/data/input/forcing/raw/persiann/'
 
 for i in range(len(flist)):
     
