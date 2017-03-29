@@ -6,7 +6,7 @@ If using any of these training materials or scripts, please cite: Markert,K., E.
 
 The training setup model is for the Nyando River Basin in eastern Kenya. The Nyando Basin is a small watershed that drains into the Winam Gulf of northeastern Lake Victoria.
 
-This training was created as a NASA capacity building effor through the NASA SERVIR Science Coordination Office (www.servirglobal.net) for the SERVIR-Eastern & Southern Africa partnering institution, the Regional Center for Mapping of Resources for Development (RCMRD, http://www.rcmrd.org/)
+This training was created as a NASA capacity building effort through the NASA SERVIR Science Coordination Office (www.servirglobal.net) for the SERVIR-Eastern & Southern Africa partnering institution, the Regional Center for Mapping of Resources for Development (RCMRD, http://www.rcmrd.org/)
 
 Please contant me at kel.markert@nasa.gov if you have any questions regarding the use of training materials or processing scripts.
 
@@ -16,14 +16,14 @@ Please contant me at kel.markert@nasa.gov if you have any questions regarding th
 
 The training was provided within a Virtual Machine (link) using the Oracle VirtualBox software. If you want to setup the VIC model and walk through the training on your local machine, please see the installation guide materials referenced in the requirements section.
 
-## CONTRIBUTING
+## CONTRIBUTING:
 
 If you have any ideas, just [open an issue][issues] and tell us what you think.
 
 If you'd like to contribute, please fork the repository and make changes as
 you'd like. Pull requests are welcome.
 
-## DISCLAIMERS
+## DISCLAIMERS:
 
 This is a work-in-progress. The scripts are offered as-is, although we will make every effort to test
 and fix any issues, we can't guarantee that these will be fit for your purpose.
