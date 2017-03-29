@@ -8,10 +8,22 @@ The training setup model is for the Nyando River Basin in eastern Kenya. The Nya
 
 This training was created as a NASA capacity building effor through the NASA SERVIR Science Coordination Office (www.servirglobal.net) for the SERVIR-Eastern & Southern Africa partnering institution, the Regional Center for Mapping of Resources for Development (RCMRD, http://www.rcmrd.org/)
 
-REQUIREMETS:
+Please contant me at kel.markert@nasa.gov if you have any questions regarding the use of training materials or processing scripts.
+
+## REQUIREMETS:
 - The training requires a Linux operation system to run the VIC model. The training materials have been tested on Ubuntu 14 and Ubuntu 16 operating systems.
 - The Python and other processing scripts require many software to be installed on the system for the training to work. If you are going to use the training materials and Python scripts please follow the instructions within the installation guide (servir-vic-training/documents/software_installation.pdf)
 
 The training was provided within a Virtual Machine (link) using the Oracle VirtualBox software. If you want to setup the VIC model and walk through the training on your local machine, please see the installation guide materials referenced in the requirements section.
 
-Please contant me at kel.markert@nasa.gov if you have any questions regarding the use of training materials or processing scripts.
+## CONTRIBUTING
+
+If you have any ideas, just [open an issue][issues] and tell us what you think.
+
+If you'd like to contribute, please fork the repository and make changes as
+you'd like. Pull requests are welcome.
+
+## DISCLAIMERS
+
+This is a work-in-progress. The scripts are offered as-is, although we will make every effort to test
+and fix any issues, we can't guarantee that these will be fit for your purpose.
