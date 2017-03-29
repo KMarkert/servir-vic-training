@@ -2,7 +2,7 @@
 
 This repository contains training material (presentations and tutorials) and processing scripts and test data on how to setup the Variable Infiltration Capacity (VIC) hydrologic model.
 
-If using these training materials, please cite: Markert,K. B. Rushi, E. Adams, E. Anderson, A. Flores, W.L. Ellenburg, A. Limaye and D. Irwin (2017). Building Capacity in Eastern Africa for Water Resource Management. *The Earth Observer*, *In preparation*.
+If using these training materials, please cite: Markert,K. B. Rushi, E. Adams, E. Anderson, A. Flores, W.L. Ellenburg, A. Limaye and D. Irwin (2017). Building Capacity in Eastern Africa for Water Resource Management through Hydrologic Modeling Training. *The Earth Observer*, *In preparation*.
 
 The training setup model is for the Nyando River Basin in eastern Kenya. The Nyando Basin is a small watershed that drains into the Winam Gulf of northeastern Lake Victoria.
 
