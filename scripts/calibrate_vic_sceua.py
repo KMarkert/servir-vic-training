@@ -1,3 +1,16 @@
+#******************************************************************************
+# FILE: calibrate_vic.py
+# AUTHOR: Kel Markert
+# EMAIL: kel.markert@nasa.gov
+# ORGANIZATION: NASA-SERVIR, UAH/ESSC
+# MODIFIED BY: n/a
+# CREATION DATE: 22 Feb. 2017
+# LAST MOD DATE: 03 Apr. 2017
+# PURPOSE: This script performs a calibration process for the VIC model using 
+#          the Shuffled Complex Evolution (SCE-UA) algorithm
+# DEPENDENCIES: numpy, pandas, scipy, spotpy
+#******************************************************************************
+
 import os
 import sys
 import spotpy
@@ -37,9 +50,7 @@ class vic_model(object):
         os.path.join(os.getcwd(), os.path.dirname(__file__)))
         
         os.chdir(__location__)
-        
-        #outCal = '../data/output/calibration_table.csv'
-        
+                
         # specify file paths to pass into system commands
         globalFile = os.path.join(__location__,'../data/input/global.params')
         soilFile = os.path.join(__location__,'../data/input/soil.param')
@@ -85,9 +96,10 @@ class vic_model(object):
     
 class spotpy_setup(object):
     def __init__(self):
-        datastart     = datetime.date(2005,1,1)
-        dataend       = datetime.date(2009,12,31)
-        self.vicmodel = vic_model(datastart,dataend,)
+        datastart     = datetime.date(2005,1,1) # calibration start
+        dataend       = datetime.date(2009,12,31) # calibration end
+        self.vicmodel = vic_model(datastart,dataend,) # routine to run model
+        # model parameters to calibrate
         self.params = [spotpy.parameter.Uniform('binfil',0,0.5),
                        spotpy.parameter.Uniform('Ws',0.,1.),
                        spotpy.parameter.Uniform('Ds',0.,1.),
@@ -102,7 +114,7 @@ class spotpy_setup(object):
     def simulation(self,vector):
         simulations= self.vicmodel.run_vic(binfilt=vector[0],Ws=vector[1],Ds=vector[2],soil_d2=vector[3],soil_d3=vector[4])
         return simulations
-
+    
     def evaluation(self,evaldates=False):
         self.vicmodel.get_obs()
         return self.vicmodel.observations
@@ -113,12 +125,15 @@ class spotpy_setup(object):
 
         
 def calibrate():
+    # calibration setup object
     cal_setup = spotpy_setup()
     
+    # initialize calibration algorithm with 
     sampler = spotpy.algorithms.sceua(cal_setup,dbname='SCEUA_VIC',dbformat='csv')
     
-    results = []
+    results = [] # empty list to append iteration results
     
+    # run calibration process
     sampler.sample(int(sys.argv[1]),ngs=5)
     results.append(sampler.getdata)
     
@@ -130,6 +145,6 @@ def calibrate():
     
     return
     
+# Execute the main level program if run as standalone
 if __name__ == "__main__":
-    
     calibrate()

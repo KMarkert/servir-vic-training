@@ -1,3 +1,17 @@
+#------------------------------------------------------------------------------
+# FILE: format_meteo_forcing.py
+# AUTHOR: Kel Markert
+# EMAIL: kel.markert@nasa.gov
+# ORGANIZATION: NASA-SERVIR, UAH/ESSC
+# MODIFIED BY: n/a
+# CREATION DATE: 28 Oct. 2016
+# LAST MOD DATE: 03 Apr. 2017
+# PURPOSE: This script takes meteorological data from ERA-Interim and PERSIANN
+#          and writes a time series of precip, tmax, tmin, and wind for each
+#          grid cell to run VIC for
+# DEPENDENCIES: numpy, netCDF4, osgeo (gdal)
+#------------------------------------------------------------------------------
+
 import os
 import sys
 import netCDF4
@@ -126,13 +140,33 @@ def format_meteo_forcing(basin_mask,inpath,outpath,startyr,endyr):
     
 def main():
 
-    t1 = datetime.now()
-    format_meteo_forcing(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
-    dt = datetime.now()-t1
-    print 'Processing time: {0}'.format(dt)
+    # checking user input
+    if len(sys.argv) != 6:
+        print "Wrong user input"
+        print "usage: python format_meteo_forcing.py <template raster> <met data input path> <forcing file outpath> <start year> <end year>"
+        #print "DIR INPUTS SHOULD CONTAIN TRAILING /"
+        sys.exit()
+        
+    else:
+        if sys.argv[2][-1] != '/':
+            print "Input met data dir should contain trailing '/'"
+            print "fixing it for you..."
+            sys.argv[2] = sys.argv[2] + "/"
+            
+        if sys.argv[3][-1] != '/':
+            print "Output forcing data dir should contain trailing '/'"
+            print "fixing it for you..."
+            sys.argv[3] = sys.argv[3] + "/"
+            
+        # pass system arguments to the function
+        t1 = datetime.now()
+        format_meteo_forcing(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
+        dt = datetime.now()-t1
+        print 'Processing time: {0}'.format(dt)
     
     return
     
+# Execute the main level program if run as standalone
 if __name__ == "__main__":
     main()
     

@@ -19,6 +19,7 @@
 # kel.markert@nasa.gov or kel.markert@uah.edu
 #-------------------------------------------------
 
+# import dependencies
 import sys
 import os, string
 # handle dates...
@@ -32,16 +33,22 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
     # building file list and sorted lat lon list
     dirin = os.path.dirname(influxes)
     
-    file_list = os.listdir(dirin)
+    try:
+        file_list = os.listdir(dirin)
+    except OSError:
+        raise OSError('Input flux directory not valid, please fix path')
     
     lat_t = []
     lon_t = []
     lat = []
     lon = []
     
-    for f in file_list:
-        lat_t.append(float(string.split(f, "_")[1]))
-        lon_t.append(float(string.split(f, "_")[2]))
+    try:
+        for f in file_list:
+            lat_t.append(float(string.split(f, "_")[1]))
+            lon_t.append(float(string.split(f, "_")[2]))
+    except ValueError:
+        raise ValueError('Input path contains files that are not flux files')
     
     for i in lat_t:
         if i not in lat:
@@ -61,6 +68,7 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
     del(lat_t)
     del(lon_t)
     
+    # if variable is not set, get it from user
     if var == None:
     
         #determining the parameter to use
@@ -100,15 +108,18 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
         var_txt = "soilLyr"+str(camada)
         var_name = "Soil moisture, layer {0}".format(camada)
     
+    # if the date information is not set get it from user
     if start_year == None:
         # for what date?
         start_year = input("Enter start year:")
     if end_year == None:
         end_year = input("End year:")
     
+    # set date information in datetime object
     inidate = dt.date(start_year,01,01)
     enddate = dt.date(end_year,12,31)
     
+    # calculate number of days in time series
     days = enddate.toordinal() - inidate.toordinal()+1
     
     #print "Gridding {0} data...".format(var_name)
@@ -132,7 +143,6 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
         lat_id = lat.index(latitude)
         lon_id = lon.index(longitude)
     
-    #    print "%i files to write." % c
         c = c -1
         
         infile = open(dirin+'/'+f, "r")
@@ -148,53 +158,61 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
     
         all_data[:,lat_id,lon_id] = dado
     
-    del dado
-    #
-    # writing NetCDF
-    #
+    del dado # del data to free memory for large datasets
     
-    ncfile = Dataset(outpath+str(var_txt)+'_'+str(start_year)+".nc", "w")
+    try:
     
-    ncfile.Conventions = "CF-1.6"
-    ncfile.title = "VIC hydrologic flux outputs"
-    ncfile.source = 'VIC hydrologic model 4.2.d'
-    ncfile.history = "Created using the NASA SERVIR VICUtils package. " + dt.date.today().isoformat()
-    ncfile.date_created = str(dt.datetime.now())
-    ncfile.references = "N/A"
-    ncfile.comment = "N/A"
+        # open netCDF file for writing
+        ncfile = Dataset(outpath+str(var_txt)+'_'+str(start_year)+".nc", "w")
+        
+        # set netCDF metadata information
+        ncfile.Conventions = "CF-1.6"
+        ncfile.title = "VIC hydrologic flux outputs"
+        ncfile.source = 'VIC hydrologic model 4.2.d'
+        ncfile.history = "Created using the script created by NASA SERVIR. " + dt.date.today().isoformat()
+        ncfile.date_created = str(dt.datetime.now())
+        ncfile.references = "N/A"
+        ncfile.comment = "N/A"
+        
+        ncfile.start_date = inidate.isoformat()
+        ncfile.end_date = enddate.isoformat()
+        
+        #create dimensions
+        ncfile.createDimension("longitude", len(lon))
+        ncfile.createDimension("latitude", len(lat))
+        ncfile.createDimension("time", days)
+        
+        #create variables
+        latvar = ncfile.createVariable("latitude", float, ("latitude",))
+        latvar.long_name = "Latitude"
+        latvar.units = "degrees_north"
+        latvar[:] = lat
+        
+        lonvar = ncfile.createVariable("longitude", float, ("longitude",))
+        lonvar.long_name = "Longitude"
+        lonvar.units = "degrees_east"
+        lonvar[:] = lon
+        
+        timevar = ncfile.createVariable("time", int, ("time",))
+        timevar.long_name = "Time"
+        timevar.units = "days since " + inidate.isoformat()
+        timevar.calendar = 'gregorian'
+        timevar[:] = range(0, days)
+        
+        # save gridded flux data to file
+        data_var = ncfile.createVariable(var_txt, float, ("time","latitude","longitude"))
+        data_var.long_name = var_name
+        data_var.missing_value = -9999.0
+        data_var.units = "mm"
+        data_var[:] = all_data[:,:,:]
+        
+        # close the file
+        ncfile.close()
+        
+    except IOError:
+        raise IOError('Output path is not valid, please fix the path string')
     
-    ncfile.start_date = inidate.isoformat()
-    ncfile.end_date = enddate.isoformat()
-    
-    #create dimensions
-    ncfile.createDimension("longitude", len(lon))
-    ncfile.createDimension("latitude", len(lat))
-    ncfile.createDimension("time", days)
-    
-    #create variables
-    latvar = ncfile.createVariable("latitude", float, ("latitude",))
-    latvar.long_name = "Latitude"
-    latvar.units = "degrees_north"
-    latvar[:] = lat
-    
-    lonvar = ncfile.createVariable("longitude", float, ("longitude",))
-    lonvar.long_name = "Longitude"
-    lonvar.units = "degrees_east"
-    lonvar[:] = lon
-    
-    timevar = ncfile.createVariable("time", int, ("time",))
-    timevar.long_name = "Time"
-    timevar.units = "days since " + inidate.isoformat()
-    timevar.calendar = 'gregorian'
-    timevar[:] = range(0, days)
-    
-    data_var = ncfile.createVariable(var_txt, float, ("time","latitude","longitude"))
-    data_var.long_name = var_name
-    data_var.missing_value = -9999.0
-    data_var.units = "mm"
-    data_var[:] = all_data[:,:,:]
-    
-    ncfile.close()
+    return
 
 def main():
     # checking user input
@@ -215,6 +233,7 @@ def main():
     flux2nc(sys.argv[1],sys.argv[2])
     
     return
-    
+
+# Execute the main level program if run as standalone
 if __name__ == "__main__":
     main()

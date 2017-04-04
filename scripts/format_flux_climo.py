@@ -1,3 +1,17 @@
+#------------------------------------------------------------------------------
+# FILE: format_flux_climo.py
+# AUTHOR: Kel Markert
+# EMAIL: kel.markert@nasa.gov
+# ORGANIZATION: NASA-SERVIR, UAH/ESSC
+# MODIFIED BY: n/a
+# CREATION DATE: 28 Oct. 2016
+# LAST MOD DATE: 03 Apr. 2017
+# PURPOSE: This script takes grided daily flux data from the VIC and
+#          calculates the monthly and yearly climatological and accummulation
+# DEPENDENCIES: numpy, pandas, netCDF4, osgeo (gdal)
+#------------------------------------------------------------------------------
+
+# import dependencies
 import os
 import sys
 import netCDF4
@@ -6,6 +20,7 @@ import datetime
 
 def format_flux_climo(influx):
     
+    # set up lists and dictionaries to look up month information for leap and non-leap years
     mons = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
     
     nidx = {'Jan':['01',0,31],'Feb':['02',31,59],'Mar':['03',59,90],'Apr':['04',90,120],
@@ -17,30 +32,37 @@ def format_flux_climo(influx):
         'Sep':['09',244,274],'Oct':['10',274,305],'Nov':['11',305,335],'Dec':['12',335,365]}
         
     
+    # get the file name
     filet1 = influx
     
+    # open flux file for reading
     nc = netCDF4.Dataset(filet1)
     draw = nc.variables[filet1.split('/')[-1].split('_')[0]]
-    var = filet1.split('/')[-1].split('_')[0]
+    var = filet1.split('/')[-1].split('_')[0] # get variable name
     
+    # get lat/lon arrays
     clon = nc.variables['longitude'][:]
     clat = nc.variables['latitude'][:]
     
+    # find timing information
     toff = nc.variables['time'].units.split(' ')[-1].split('-')
     t1 = datetime.date(int(toff[0]),int(toff[1]),int(toff[2]))
     t2 = t1 + datetime.timedelta(np.max(nc.variables['time']))
             
+    # get number of years in series
     yrs = np.arange(t1.year,t2.year+1)
         
-    dt = -365
-    vi = 0
+    dt = -365 # day counter
     
+    # set blank arrays to save data to
     outdata = np.zeros([yrs.size,len(mons),clat.size,clon.size])
     outmon = np.zeros([len(mons),clat.size,clon.size])
     
-    yrvars = np.zeros([yrs.size,clat.size,clon.size])
+    yrvars = np.zeros([yrs.size,clat.size,clon.size]) # ???
         
+    # loop over all of the years
     for y in range(yrs.size):
+        # get number of days for leap and non-leap years
         if yrs[y]%4 == 0:
             idx = lidx
             dt+=366
@@ -48,10 +70,7 @@ def format_flux_climo(influx):
             idx = nidx
             dt+=365
             
-        if dt >= 3652:
-            dt = 0
-            vi += 1
-        
+        # loop over each month        
         for m in range(len(mons)):
             
             midx = idx[mons[m]]
@@ -59,26 +78,33 @@ def format_flux_climo(influx):
             t1 = midx[1] + dt
             t2 = midx[2] + dt
             
+            # calculate the accumulated flux
             outdata[y,m,:,:] = np.sum(draw[t1:t2,:,:],axis=0)
             
+    # mask the no data values
     outdata = np.ma.masked_where(outdata<=0,outdata)
             
-    outyr = np.sum(outdata,axis=1)
+    # do some accumlations over axises
+    outyr = np.sum(outdata,axis=1) # yearly accumulation
     
-    outmon = np.mean(outdata,axis=0)
+    outmon = np.mean(outdata,axis=0) # monthly climatology
     
-    avgyr = np.mean(outyr,axis=0)
+    avgyr = np.mean(outyr,axis=0) # yearly climatological average
     
+    # get path to outfile 
     __location__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        
+    
+    # output file name
     filepath = r'{0}{1}_climatology.nc'.format(filet1.split('{0}'.format(var))[0],var)
     
+    # join paths
     outfile = os.path.join(__location__,filepath)
-    print outfile
-    
+
+    # open output netCDF file for writing    
     ncfile = netCDF4.Dataset(outfile, "w")
     
+    # write netCDF metadata
     ncfile.Conventions = "CF-1.6"
     ncfile.title = "VIC hydrologic flux climatology"
     ncfile.source = 'VIC hydrologic model 4.2.d'
@@ -138,24 +164,28 @@ def format_flux_climo(influx):
     data_avar.units = "mm/yr"
     data_avar[:] = avgyr[:,:]
     
+    # close netCDF file
     ncfile.close()
+    
+    print 'Flux climotology file written to "{0}" directory'.format(__location__)
 
-    return 'Flux climotology file written to "{0}" directory'.format(__location__)
+    return 
     
 def main():
     # checking user input
     if len(sys.argv) != 2:
         print "Wrong user input"
         print "Caluculate flux climatology from flux NetCDF"
-        print "usage format_flux_climo.py <vic flux netcdf file>"
+        print "usage: python format_flux_climo.py <vic flux netcdf file>"
         #print "DIR INPUTS SHOULD CONTAIN TRAILING /"
         sys.exit()
         
     else:
-        message = format_flux_climo(sys.argv[1])
-        print message
+        # pass system arguments to the function
+        format_flux_climo(sys.argv[1])
         
     return
     
+# Execute the main level program if run as standalone
 if __name__ == "__main__":
     main()
