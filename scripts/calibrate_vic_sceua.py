@@ -1,5 +1,5 @@
 #******************************************************************************
-# FILE: calibrate_vic.py
+# FILE: calibrate_vic_sceua.py
 # AUTHOR: Kel Markert
 # EMAIL: kel.markert@nasa.gov
 # ORGANIZATION: NASA-SERVIR, UAH/ESSC
