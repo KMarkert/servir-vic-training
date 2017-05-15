@@ -26,152 +26,7 @@ from osgeo.gdalconst import *
 from dd_conversions import *
 
 # set system to ignore simple warnings
-warnings.simplefilter("ignore")
-
-def save_Q_timeseries(outQ,outFile,startTime,endTime,daily='True'):
-    """
-    Function saves streamflow time series to CSV file with date information
-    
-    Arguments:
-        outQ -- streamflow time series to be saved
-        outFile -- output file path with CSV extension
-        startTime -- beginning date of time series as datetime object
-        endTime -- ending date of time series  as datetime object
-        
-    Keywords:
-        daily -- Boolean: set true if time series is daily streamflow,
-                 false for monthly streamflow. Default: True
-        
-    Returns:
-        n/a
-        
-    Notes:
-        Assumes that streamflow is monthly mean streamflow if not daily
-        Does not return a value but writes an output file
-        
-    """
-    
-    # get year information
-    years = np.arange(startTime.year,endTime.year+1)
-    tdelta = endTime-startTime # find offset
-    
-    # set blank lists for data to be input
-    yrs = []
-    mon = []
-    day = []
-    q = []
-    
-    # check if data is daily
-    if daily == 'True':
-    
-        # loop over each day
-        for i in range(tdelta.days+1):
-            date = startTime + datetime.timedelta(i) # get date information
-            newDate = date.strftime('%Y%m%d') # convert date to readable text
-            # start appending data
-            yrs.append(newDate[:4])
-            mon.append(newDate[4:6])
-            day.append(newDate[6:])
-            q.append(outQ[i])
-    
-    # if data is monthly
-    else:
-        
-        cnt = 0 # index counter
-        # loop over each year
-        for i in range(years.size):
-            # if first iteration get the starting month in the year
-            if i == 0:
-                moff = startTime.month 
-                mcnt = 13 - startTime.month
-            # else assume a full year's worth of data
-            else:
-                moff = 1
-                mcnt = 12
-            # check if ending year and find last month in series
-            if years[i] == endTime.year:
-                mcnt = endTime.month
-            # loop over each month and append data
-            for j in range(mcnt):
-                yrs.append(years[i])
-                mon.append(j+moff)
-                day.append(1)
-                q.append(outQ[cnt])
-                cnt+=1
-
-    # convert data to dictionary
-    d = {'Year':yrs,'Month':mon,'Date':day,'Discharge':q}
-    
-    # make dictionary to data frame
-    df = pd.DataFrame(data=d)
-    
-    # save out dataframe to outfile
-    df.to_csv(outFile)
-            
-    return
-
-def dailyQ_2_monthlyQ(dailyQ,yrs):
-    """
-    Function converts daily streamflow to monthly mean streamflow
-    
-    Arguments:
-        dailyQ -- daily time series of streamflow from a gauge
-        yrs -- number of years that the time series covers 
-        
-    Keywords:
-        n/a
-        
-    Returns:
-        monQ -- monthly mean streamflow for the specified time period
-        
-    Notes:
-        This function assumes that the time series starts on Jan. 1st of a year
-        and ends on Dec. 31.
-        
-    """
-    
-    # create dictionaries for the indices covering each month for leap and non-leap years
-    nidx = {0:['01',0,31],1:['02',31,59],2:['03',59,90],3:['04',90,120],
-            4:['05',120,151],5:['06',151,181],6:['07',181,212],7:['08',212,243],
-            8:['09',243,273],9:['10',273,304],10:['11',304,334],11:['12',334,364]}
-       
-    lidx = {0:['01',0,31],1:['02',31,60],2:['03',60,91],3:['04',91,121],
-            4:['05',121,152],5:['06',152,182],6:['07',182,213],7:['08',213,244],
-            8:['09',244,274],9:['10',274,305],10:['11',305,335],11:['12',335,365]}
-    
-    # get blank array for monthly streamflow
-    monQ = np.zeros(yrs.size*12)
-
-    dt = -365 # counter for days
-        
-    cnt = 0 # counter for monthly streamflow
-    
-    # loop over the number of years
-    for y in range(yrs.size):
-        # get number of days for leap or non-leap year
-        if yrs[y]%4 == 0:
-            idx = lidx
-            dt+=366
-        else:
-            idx = nidx
-            dt+=365
-        
-        # loop over number of months
-        for m in range(12):
-            
-            midx = idx[mons[m]] # grab monthly indices
-            
-            # shift monthly indces for the processing year
-            t1 = midx[1] + dt 
-            t2 = midx[2] + dt
-            
-            # get mean monthly streamflow
-            monQ[cnt] = np.nanmean(dailyQ[t1:t2])
-            
-            cnt+=1 # plus one to streamflow index counter
-            
-    return monQ
-      
+warnings.simplefilter("ignore")      
 
 def make_irf(xmask,diff,velo):
     """
@@ -327,7 +182,7 @@ def rout_vic(uhfile,catchfile,roFile,bfFile,outfile,stime,etime,daily=False,
     t2off = (t2-begintime).days+1 # ending offset from start of netCDF series
     
     days = tdelta.days+1 # number of days to run
-    yrs = np.arange(int(stime[:4]),int(etime[:4])+1) # number of years to run
+    #yrs = np.arange(int(stime[:4]),int(etime[:4])+1) # number of years to run
                 
     idx = np.where(data[:,:,0]>0) #get the cells of the watershed
     
@@ -357,7 +212,7 @@ def rout_vic(uhfile,catchfile,roFile,bfFile,outfile,stime,etime,daily=False,
         factor = (data[idx[0][i],idx[1][i],0] * ((area_vals[0]*area_vals[1]))) / (tfactor*lfactor)
         
         # calculate theoretical longest distance from a point in a pixel to stream channel
-        xmask_val = ((area_vals[0]*2)+(area_vals[1]*2))/2.
+        xmask_val = np.sqrt((area_vals[0]**2)+(area_vals[1]**2))/2.
                 
         # make UH for grid cell
         uh = make_uh(xmask_val,uh_box,float(diffusion),float(velocity))
@@ -373,27 +228,42 @@ def rout_vic(uhfile,catchfile,roFile,bfFile,outfile,stime,etime,daily=False,
         except AttributeError:
             # iterate over each time period in UH
             for u in range(uh.size):
-                # calculate the percent contributions from pixel to outlet
+                # calculate the percent contributions from pixel to outlet at each time period
                 gridUH[u:days+u,u] = (basefl+runoff)*uh[u]
             
-            # sum across time period
+            # sum across time period for a pixel
             basinUH[i,:] = np.nansum(gridUH[:days,:],axis=1)
     
-    # sum across basin
+    # sum across outlet watershed area
     finalQ = np.nansum(basinUH,axis=0)
     
     # close netCDF files
     ronc.close()
     bfnc.close()
     
+    # set pandas date objects based on routing start and end time
+    dates = pd.date_range(t1, t2, freq='D')
+    
+    # create pandas time series for discharge based on date range
+    q_series = pd.Series(finalQ, index=dates)
+    
     # temporal aggregation check
     if daily != 'True':
-        outQ = dailyQ_2_monthlyQ(finalQ,yrs)
+        # resample to monthly mean discharge
+        outQ = q_series.resample("M").mean()
     else:
-        outQ = finalQ
+        # leave as daily discharge
+        outQ = q_series
         
-    # save out time series
-    save_Q_timeseries(outQ,outfile,t1,t2,daily)
+    # pass time series into a pandas dataframe
+    df = pd.DataFrame(outQ)
+    
+    # fix the column naming
+    df.index.name = 'Date'
+    df.columns = ['Discharge']
+    
+    # save time series to csv file
+    df.to_csv(outfile)
     
     return
 
