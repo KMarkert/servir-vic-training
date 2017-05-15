@@ -66,7 +66,7 @@ def snap_raster(inputRas,outputRas,templateRas,subGrid,resample):
             
         # check to make sure that the output data type will make sense with the resampling method
         if (resample != 'nearest') | (resample != 'mode'):
-            if 'Int' in dytpe:
+            if 'Int' in dtype:
                 src_dtype = datatypes['Float32']
             elif 'Byte' in dtype:
                 src_dtype = datatypes['Float32']

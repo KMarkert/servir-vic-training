@@ -152,7 +152,7 @@ def main():
     n_args = len(sys.argv)
     
     # Check user inputs
-    if n_args != 1:
+    if n_args != 2:
         print "Wrong user input"
         print "Script used to perform a simple random calibration process for the VIC model"
         print "usage: python calibrate_vic.py <number of iterations> "
