@@ -17,6 +17,7 @@ import sys
 import datetime
 import numpy as np
 import pandas as pd
+import xarray as xr
 from scipy import stats
 from format_soil_params import *
 from rout_vic import *
@@ -61,14 +62,16 @@ def calibrate_vic(niter):
 
     # specify range of acceptable parameter
     b_range = [0, 0.5]
-    Ws_range = [0,1]
-    Ds_range = [0,1]
+    Ws_range = [0.5,1]
+    Ds_range = [0,0.5]
+    c_range = [0.01,5]
     s_range = [0.3,1.5]
     
     #empty lists to add calibration results
     b_vals = []
     Ws_vals = []
     Ds_vals = []
+    c_vals = []
     s2_vals = []
     s3_vals = []
     NSEs = []
@@ -85,11 +88,20 @@ def calibrate_vic(niter):
         print "Iteration {0} of {1}".format(i+1,niter) # 
         
         # get random variable for each parameter
-        b_val = np.random.uniform(b_range[0],b_range[1],1)[0]
-        Ws_val = np.random.uniform(Ws_range[0],Ws_range[1],1)[0]
-        Ds_val = np.random.uniform(Ds_range[0],Ds_range[1],1)[0]
-        s2_val = np.random.uniform(s_range[0],s_range[1],1)[0]
-        s3_val = np.random.uniform(s_range[0],s_range[1],1)[0]
+        # get random variable for each parameter
+        #b_val = np.random.uniform(b_range[0],b_range[1],1)[0]
+        #Ws_val = np.random.uniform(Ws_range[0],Ws_range[1],1)[0]
+        #Ds_val = np.random.uniform(Ds_range[0],Ds_range[1],1)[0]
+        #c_val = np.random.uniform(c_range[0],c_range[1],1)[0]
+        #s2_val = np.random.uniform(s_range[0],s_range[1],1)[0]
+        #s3_val = np.random.uniform(s_range[0],s_range[1],1)[0]
+        
+        b_val = 0.086734798
+        Ws_val = 0.626467812
+        Ds_val = 0.031062675
+        c_val = 3.225213007
+        s2_val = 1.311442407
+        s3_val = 1.272227087
  
         # use random parameters in soil parameter file
         format_soil_params(gridRas,soilRas,elvRas,precipRas,slopeRas,soilFile,
@@ -106,14 +118,16 @@ def calibrate_vic(niter):
         rout_vic(uhFile,fracRas,roFile,bfFile,routOut,calStart,calEnd,daily='False')
         
         # read simulated and observed data for time period
-        simCsv = pd.read_csv(routOut)
         obsData = pd.ExcelFile(valFile)
-        
-        obsSheet = obsData.parse('Monthly')
-        
-        obsSeries = np.array(obsSheet.Q)[4:59]
-        
-        simSeries = np.array(simCsv.Discharge)[5:]
+        obsSheet = obsData.parse(stn)
+        obsdates = np.array(obsSheet.Date)
+        obstimes = pd.date_range('2005-02-01','2013-12-31',freq='D')
+        obsSeries = xr.DataArray(obsSheet.Obs,coords=[obstimes],dims=['time']).sel(time=slice('2005-03-01','2009-12-31')).data
+
+        simCsv = pd.read_csv(routOut)
+        simtimes = pd.date_range('2005-01-01','2009-12-31',freq='D')
+        simSeries = xr.DataArray(simCsv.Discharge,coords=[simtimes],dims=['time'])
+        simSeries = simSeries.sel(time=slice('2005-03-01','2009-12-31')).data
         
         # calculate model performance statistics
         r = stats.pearsonr(obsSeries,simSeries)
@@ -144,6 +158,14 @@ def calibrate_vic(niter):
         
     # save dataframe to csv
     df.to_csv(outCal)
+
+    idx = np.argmax(df.NSE)
+    
+    print 'BEST PARAMETER SET:\nb: {0}\tWs: {1}\tDs: {2}\tc: {3}\tSd2: {4}\tSd3: {5}\n'.format(df.Infilt[idx],
+                                                                                    df.Ws[idx],df.Ds[idx],df.C[idx],df.S2Depth[idx],df.S3Depth[idx])
+        
+    print 'PARAMETER EVALUATION:\nR: {0}\tNSE: {1}\tBias: {2}\tRMSE: {3}'.format(df.R[idx],df.NSE[idx],
+                                                                        df.Bias[idx],df.RMSE[idx])
     
     return
         

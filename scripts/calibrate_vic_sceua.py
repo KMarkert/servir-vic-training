@@ -35,10 +35,10 @@ class vic_model(object):
         valFile = '../data/input/Nyando_discharge.xlsx'
         
         obsData = pd.ExcelFile(valFile)
-        
-        obsSheet = obsData.parse('Monthly')
-        
-        obsSeries = np.array(obsSheet.Q)[4:59]
+        obsSheet = obsData.parse(stn)
+        obsdates = np.array(obsSheet.Date)
+        obstimes = pd.date_range('2005-02-01','2013-12-31',freq='D')
+        obsSeries = xr.DataArray(obsSheet.Obs,coords=[obstimes],dims=['time']).sel(time=slice('2005-03-01','2009-12-31')).data
         
         self.observations = obsSeries
         
@@ -85,11 +85,12 @@ class vic_model(object):
         flux2nc(fluxPath,fluxNc, 6,self.st.year,self.et.year)
         
         # run routing model
-        rout_vic(uhFile,fracRas,roFile,bfFile,routOut,calStart,calEnd,daily='False')
+        rout_vic(uhFile,fracRas,roFile,bfFile,routOut,calStart,calEnd,daily='True')
         
         simCsv = pd.read_csv(routOut)
-        
-        simSeries = np.array(simCsv.Discharge)[5:]
+        simtimes = pd.date_range('2005-01-01','2009-12-31',freq='D')
+        simSeries = xr.DataArray(simCsv.Discharge,coords=[simtimes],dims=['time'])
+        simSeries = simSeries.sel(time=slice('2005-03-01','2009-12-31')).data
             
         return simSeries
         
