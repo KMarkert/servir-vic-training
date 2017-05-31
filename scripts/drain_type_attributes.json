@@ -4,8 +4,8 @@
       "class": "1",
       "properties": {
         "classname": "Very Poor",
-		"infilt": 0.2,
-		"Ds": 0.4,
+		"infilt": 0.3,
+		"Ds": 0.0025,
 		"Ws": 0.99
        }
     },
@@ -13,53 +13,53 @@
       "class": "2",
       "properties": {
         "classname": "Poor",
-		"infilt": 0.15,
-		"Ds": 0.35,
-		"Ws": 0.975
+		"infilt": 0.25,
+		"Ds": 0.002,
+		"Ws": 0.95
        }
     },
     {
       "class": "3",
       "properties": {
         "classname": "Imperfectly",
-		"infilt": 0.125,
-		"Ds": 0.325,
-		"Ws": 0.96
+		"infilt": 0.225,
+		"Ds": 0.0015,
+		"Ws": 0.925
        }
     },
     {
       "class": "4",
       "properties": {
         "classname": "Moderately Well",
-		"infilt": 0.1,
-		"Ds": 0.3,
-		"Ws": 0.95
+		"infilt": 0.2,
+		"Ds": 0.001,
+		"Ws": 0.90
        }
     },
     {
       "class": "5",
       "properties": {
         "classname": "Well",
-		"infilt": 0.099,
-		"Ds": 0.295,
-		"Ws": 0.95
+		"infilt": 0.2,
+		"Ds": 0.001,
+		"Ws": 0.90
        }
     },
     {
       "class": "6",
       "properties": {
         "classname": "Somewhat Excessive",
-		"infilt": 0.075,
-		"Ds": 0.25,
-		"Ws": 0.90
+		"infilt": 0.15,
+		"Ds": 0.0008,
+		"Ws": 0.85
        }
     },
     {
       "class": "7",
       "properties": {
         "classname": "Excessive",
-		"infilt": 0.05,
-		"Ds": 0.2,
-		"Ws": 0.85
+		"infilt": 0.1,
+		"Ds": 0.0005,
+		"Ws": 0.8
        }
     }]}
