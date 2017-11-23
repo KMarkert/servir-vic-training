@@ -48,6 +48,16 @@ def create_aoi_grid(inputAOI,outputGrid,gridSize):
         source_layer = source_ds.GetLayer()
         x_min, x_max, y_min, y_max = source_layer.GetExtent()
         
+        # adjust the output domain to grid size floating point
+        xOff = x_min % gridSize
+        x_min = x_min - xOff
+        xOff = x_max % gridSize
+        x_max = x_max + (gridSize-xOff)
+        yOff = y_max % gridSize
+        y_max = y_max + (gridSize-yOff)
+        yOff = y_min % gridSize
+        y_min = y_min - yOff 
+        
         # Create high res source for boundary accuracy
         hiResRatio = 50.
         highResGrid = gridSize / hiResRatio
