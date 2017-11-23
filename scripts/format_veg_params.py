@@ -89,7 +89,7 @@ def format_veg_params(basinMask,lcData,outVeg,scheme='IGBP'):
     # check if the output parameter file exists, if so delete it
     if os.path.exists(vegfile)==True:
         os.remove(vegfile)
-        
+
     try: # try to write output veg parameter file
     
         # open output file for writing
