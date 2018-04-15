@@ -65,14 +65,14 @@ def snap_raster(inputRas,outputRas,templateRas,subGrid,resample):
             raise KeyError('{0} is not a valid resampling method'.format(resample))
             
         # check to make sure that the output data type will make sense with the resampling method
-        if (resample != 'nearest') | (resample != 'mode'):
+        if (resample != 'nearest') and (resample != 'mode'):
             if 'Int' in dtype:
                 src_dtype = datatypes['Float32']
             elif 'Byte' in dtype:
                 src_dtype = datatypes['Float32']
             else:
-                raise KeyError('Error setting output data type')
-        
+                pass
+    
         # We want a section of source that matches this:
         match_ds = gdal.Open(templateRas,GA_ReadOnly)
         match_proj = match_ds.GetProjection()

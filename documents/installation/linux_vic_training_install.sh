@@ -80,7 +80,7 @@ git checkout VIC.4.2.d
 cd src/
 make
 cd ../..
-echo "VIC model compiled at '~/VIC/src/vicNl'"
+echo "VIC model compiled at '/VIC/src/vicNl'"
 
 
 echo "Installation completed successfully!"
