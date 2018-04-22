@@ -105,7 +105,7 @@ def make_uh(xmask_val,uh_box,diff,velo):
             if t-l > 0:
                 fr[t,1] = fr[t,1] + fr[t-l,0] * irf[l]
                 
-        tt = (t+23) / 24.
+        tt = int((t+23) / 24.)
         uh_daily[tt-1] = uh_daily[tt-1]+fr[t,1]
         
     # for each time period find the UH based on the IRF
