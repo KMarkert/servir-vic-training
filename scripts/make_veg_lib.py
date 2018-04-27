@@ -64,8 +64,8 @@ def make_veg_lib(LCFile,LAIFolder,ALBFolder,outVeg,scheme='IGBP'):
         b1 = None
         
         # get list of paths to LAI and albedo data
-        laifiles = glob.glob(os.path.join(__location__,LAIFolder,'*.tif'))
-        albfiles = glob.glob(os.path.join(__location__,ALBFolder,'*.tif'))
+        laifiles = sorted(glob.glob(os.path.join(__location__,LAIFolder,'*.tif')))
+        albfiles = sorted(glob.glob(os.path.join(__location__,ALBFolder,'*.tif')))
         
         # loop over each month in the year
         for i in range(12):

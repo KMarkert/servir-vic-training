@@ -104,12 +104,12 @@ def format_snow_params(basinMask,elvHiRes,outSnow,interval):
                         # get all hi res pixels in a template pixel
                         tmp = elvhires[cy1:cy2,cx1:cx2]
       		
-      		        # find min and max values for interval
-      		        minelv = np.min(tmp.astype(int)) - (np.min(tmp.astype(int))%interval)
-      		        maxelv = np.max(tmp.astype(int)) + (np.max(tmp.astype(int))%interval)
+      		            # find min and max values for interval
+                        minelv = np.min(tmp.astype(int)) - (np.min(tmp.astype(int))%interval)
+                        maxelv = np.max(tmp.astype(int)) + (np.max(tmp.astype(int))%interval)
                                     
                         # create an array of band limits                                                 
-      		        bands = np.arange(minelv, maxelv+interval,interval)
+                        bands = np.arange(minelv, maxelv+interval,interval)
       		    
                         # create blank array for number of bands calculation...
                         if mask[i,j] == 1: # ...if it is not a masked pixel
@@ -120,7 +120,7 @@ def format_snow_params(basinMask,elvHiRes,outSnow,interval):
                             # get the number of bands per pixel
           		    for b in range(bands.size-1):
          			
-                                bcls[np.where((tmp>=bands[b])&(tmp<bands[b+1]))] = b # band counter
+                        bcls[np.where((tmp>=bands[b])&(tmp<bands[b+1]))] = b # band counter
                                 
                                 # if it's the first pass get number of bands for each pixel
                                 if pass_cnt == 0:
