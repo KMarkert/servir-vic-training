@@ -219,22 +219,17 @@ def rout_vic(uhfile,catchfile,roFile,bfFile,outfile,stime,etime,daily=False,
         uh = make_uh(xmask_val,uh_box,float(diffusion),float(velocity))
 
         # grab runoff and baseflow time series for grid cell
-        print(idx[0][i],idx[1][i])
         runoff = (rovar[t1off:t2off,idx[0][i],idx[1][i]]*factor)
         basefl = (bfvar[t1off:t2off,idx[0][i],idx[1][i]]*factor)
 
+        # iterate over each time period in UH
+        for u in range(uh.size):
+            # calculate the percent contributions from pixel to outlet at each time period
+            gridUH[u:days+u,u] = (basefl+runoff)*uh[u]
 
-        try: # check that runoff data is available
-            tmp = runoff.count()
-            continue
-        except AttributeError:
-            # iterate over each time period in UH
-            for u in range(uh.size):
-                # calculate the percent contributions from pixel to outlet at each time period
-                gridUH[u:days+u,u] = (basefl+runoff)*uh[u]
+        # sum across time period for a pixel
+        basinUH[i,:] = np.nansum(gridUH[:days,:],axis=1)
 
-            # sum across time period for a pixel
-            basinUH[i,:] = np.nansum(gridUH[:days,:],axis=1)
 
     # sum across outlet watershed area
     finalQ = np.nansum(basinUH,axis=0)
