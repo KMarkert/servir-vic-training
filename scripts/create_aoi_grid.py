@@ -12,6 +12,7 @@
 #******************************************************************************
 
 # import dependencies
+from __future__ import print_function,division
 import os
 import sys
 import numpy as np
@@ -28,26 +29,26 @@ def create_aoi_grid(inputAOI,outputGrid,gridSize):
     RETURNS: n/a
     NOTES: Returns no variables but writes an output file
     """
-    
+
     # try to do the process
     try:
-    
+
         # define script file path for relative path definitions
         __location__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        
+
         # Define pixel_size and NoData value of new raster
         NoData_value = 0
-        
+
         #Define output coordinate system
         spatialRef = osr.SpatialReference()
         spatialRef.SetWellKnownGeogCS('WGS_84')
-        
+
         # Open the data source and read in the extent
         source_ds = ogr.Open(os.path.join(__location__,inputAOI))
         source_layer = source_ds.GetLayer()
         x_min, x_max, y_min, y_max = source_layer.GetExtent()
-        
+
         # adjust the output domain to grid size floating point
         xOff = x_min % gridSize
         x_min = x_min - xOff
@@ -56,32 +57,32 @@ def create_aoi_grid(inputAOI,outputGrid,gridSize):
         yOff = y_max % gridSize
         y_max = y_max + (gridSize-yOff)
         yOff = y_min % gridSize
-        y_min = y_min - yOff 
-        
+        y_min = y_min - yOff
+
         # Create high res source for boundary accuracy
         hiResRatio = 50.
         highResGrid = gridSize / hiResRatio
-        
+
         # Get high res cell size
         x_hres = int(np.ceil((x_max - x_min) / highResGrid))
         y_hres = int(np.ceil((y_max - y_min) / highResGrid))
-        
+
         # Create high res raster in memory
         mem_ds = gdal.GetDriverByName('MEM').Create('', x_hres, y_hres, gdal.GDT_Byte)
         mem_ds.SetGeoTransform((x_min, highResGrid, 0, y_max, 0, -highResGrid))
         band = mem_ds.GetRasterBand(1)
         band.SetNoDataValue(NoData_value)
-        
+
         # Rasterize shapefile to high resolution grid
         gdal.RasterizeLayer(mem_ds, [1], source_layer, burn_values=[1])
-        
+
         # Get rasterized high res shapefile
         array = band.ReadAsArray()
-        
+
         # Flush memory file
         mem_ds = None
         band = None
-        
+
         # Create the destination data source
         x_res = int(np.ceil((x_max - x_min) / gridSize))
         y_res = int(np.ceil((y_max - y_min) / gridSize))
@@ -89,10 +90,10 @@ def create_aoi_grid(inputAOI,outputGrid,gridSize):
         target_ds = drv.Create(os.path.join(__location__,outputGrid), x_res, y_res, 1, gdal.GDT_Byte)
         target_ds.SetGeoTransform((x_min, gridSize, 0, y_max, 0, -gridSize))
         target_ds.SetProjection(spatialRef.ExportToWkt())
-        
+
         # Create blank mask array at target res
         outMask = np.zeros([y_res,x_res])
-        
+
         # Loop over array to find the elements the high res raster falls in
         for i in range(y_res):
             y1 = int(i*hiResRatio)
@@ -100,40 +101,40 @@ def create_aoi_grid(inputAOI,outputGrid,gridSize):
             for j in range(x_res):
                 x1 = int(j*hiResRatio)
                 x2 = int(x1+hiResRatio)
-                
+
                 tmp = array[y1:y2,x1:x2]
-                
+
                 if np.any(tmp==1)==True:
                     outMask[i,j] = 1
-        
+
         # set the mask array to the target file
         band = target_ds.GetRasterBand(1)
         band.WriteArray(outMask)
         band.SetNoDataValue(NoData_value)
-        
+
         # Flush the target file
         target_ds = None
         band = None
-    
+
     # if not working, then give an error message
     except AttributeError:
         raise IOError('Raster file input error, check that all paths are correct')
-    
+
     return
 
 # Main level program for use in the command line
 def main():
-    
+
     n_args = len(sys.argv)
-    
+
     # Check user inputs
     if n_args != 4:
-        print "Wrong user input"
-        print "Script converts shapefile to raster grid"
-        print "usage: python create_aoi_grid.py <input shapefile> <output raster file> <output cell size>"
-        print "Exiting system..."
+        print("Wrong user input")
+        print("Script converts shapefile to raster grid")
+        print("usage: python create_aoi_grid.py <input shapefile> <output raster file> <output cell size>")
+        print("Exiting system...")
         sys.exit()
-    
+
     else:
         # Pass command line arguments into function
         create_aoi_grid(sys.argv[1],sys.argv[2],float(sys.argv[3]))

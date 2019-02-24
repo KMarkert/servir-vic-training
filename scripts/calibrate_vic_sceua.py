@@ -11,6 +11,7 @@
 # DEPENDENCIES: numpy, pandas, scipy, spotpy
 #******************************************************************************
 
+from __future__ import print_function
 import os
 import sys
 import spotpy
@@ -127,9 +128,9 @@ class spotpy_setup(object):
 
 def findBestSim(dbPath):
     csv = pd.read_csv(dbPath+'.csv')
-    
+
     results = np.array(csv)
-    
+
     likes = np.array(csv.like1)
 
     idx = np.abs(likes).argmin()
@@ -171,13 +172,13 @@ def calibrate():
     print('Best parameter set: {0}'.format(params))
 
     lastRun = vic_model(datetime.date(2005,1,1),datetime.date(2009,12,31))
-    
+
     sim = lastRun.run_vic(params[0],params[1],params[2],
                             params[3],params[4],params[5])
-    
+
     lastRun.get_obs()
     obs = lastRun.observations
-    
+
     print(sim,obs)
     stats = runStats(sim,obs)
     print('Calibration error statistics...\n \
