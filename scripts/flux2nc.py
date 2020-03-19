@@ -46,8 +46,8 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
 
     try:
         for f in file_list:
-            lat_t.append(float(string.split(f, "_")[1]))
-            lon_t.append(float(string.split(f, "_")[2]))
+            lat_t.append(float(str.split(f, "_")[1]))
+            lon_t.append(float(str.split(f, "_")[2]))
     except ValueError:
         raise ValueError('Input path contains files that are not flux files')
 
@@ -86,7 +86,7 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
         if varini < 6:
             var = varini + 2
         elif varini == 6:        #more than one soil layer...
-            camada = input('which soil layer?>')
+            camada = int(input('which soil layer?>'))
             var = varini + 2 + camada
 
     #set name of out_file. Named after parameter choice
@@ -112,12 +112,12 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
     # if the date information is not set get it from user
     if start_year == None:
         # for what date?
-        start_year = input("Enter start year:")
+        start_year = int(input("Enter start year:"))
     if end_year == None:
-        end_year = input("End year:")
+        end_year = int(input("End year:"))
 
     # set date information in datetime object
-    inidate = dt.date(start_year,01,01)
+    inidate = dt.date(start_year,1,1)
     enddate = dt.date(end_year,12,31)
 
     # calculate number of days in time series
@@ -139,8 +139,8 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
     # for each file in list
     for f in file_list:
         # get lat & lon and it's index
-        latitude = float(string.split(f, sep="_")[1])
-        longitude = float(string.split(f, sep="_")[2])
+        latitude = float(str.split(f, sep="_")[1])
+        longitude = float(str.split(f, sep="_")[2])
         lat_id = lat.index(latitude)
         lon_id = lon.index(longitude)
 
@@ -152,8 +152,8 @@ def flux2nc(influxes,outpath,var=None,start_year=None,end_year=None):
         dado = []
 
         for l in lixo:
-            if int(string.split(l, sep="\t")[0]) in range(inidate.year, enddate.year+1):
-                dado.append(float(string.split(l, sep="\t")[var]))
+            if int(str.split(l, sep="\t")[0]) in range(inidate.year, enddate.year+1):
+                dado.append(float(str.split(l, sep="\t")[var]))
             # putting data inside array.
             # Since data has lat & lon fixed uses dimension [:,lat_index,lon_index]
 
