@@ -1,8 +1,10 @@
 # servir-vic-training
 
-This repository contains training material (presentations and tutorials) and processing scripts and test data on how to setup the Variable Infiltration Capacity (VIC) hydrologic model.
+---
+🚨 WARNING: This respository will be archieved starting 30 April 2020 meaning support for scripts will be limited. Development for hydrologic modeling will be provided through the [hydrate](https://github.com/kmarkert/hydrate) package. 🚨
+---
 
-If using any of these training materials or scripts, please cite: (1) Markert,K.N., R.E. Griffin, and E.R. Anderson (2018) An open source software suite for building capacity in using the VIC hydrology model, *Open Water*, *submitted* and (2) Markert K.N., E.C. Adams, B.R. Rushi, F. Mitheu, E.R. Anderson, A.I. Flores, and W.L. Ellenburg (2018). Building capacity in eastern Africa for hydrologic modeling . *The Earth Observer*, *In preparation*.
+This repository contains training material (presentations and tutorials) and processing scripts and test data on how to setup the Variable Infiltration Capacity (VIC) hydrologic model.
 
 The training setup model is for the Nyando River Basin in eastern Kenya. The Nyando Basin is a small watershed that drains into the Winam Gulf of northeastern Lake Victoria.
 
